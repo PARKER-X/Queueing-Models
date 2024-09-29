@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import networkx as nx
+
 # Models
 def birthProcess(birth_rate,total_time):
     time=0
@@ -49,6 +50,8 @@ def plot_state_transition_diagram_birth(max_population, birth_rate):
     plt.ylabel("Next Population Size")
     plt.grid()
     st.pyplot(plt)
+
+# Statistics
 def display_statistics(populations):
     # Calculate statistics
     final_population = populations[-1]

@@ -50,6 +50,7 @@ def plot_state_transition_diagram_death(max_population, death_rate):
     plt.grid()
     st.pyplot(plt)
 
+# Statistics
 def display_statistics(populations):
     # Calculate statistics
     final_population = populations[-1]
