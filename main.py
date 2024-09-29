@@ -5,7 +5,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from birthprocess import birthProcess,plot_state_transition_diagram,visualize,display_statistics
+from birthprocess import birthProcess,plot_state_transition_diagram_birth,visualize_birth,display_statistics
+from deathprocess import *
 
 st.write("Queueing Models")
 
@@ -17,14 +18,14 @@ st.write("You selected:",models)
 # Pure Birth Process Models 
 if models=="Pure Birth Process":    
     birth_rate = st.sidebar.slider("Birth Rate (λ)",0.1,10.0,1.0)
-    total_time = st.sidebar.slider("Total Time (λ)",1,100,10)
+    total_time = st.sidebar.slider("Total Time ",1,100,10)
     if st.button("Run Simulation"):
         times, populations = birthProcess(birth_rate, total_time)
         # Plotting
-        visualize(times, populations)
+        visualize_birth(times, populations)
         final_population=populations[-1]
         st.write(f"Final population after {total_time} time units: {final_population}")
-        plot_state_transition_diagram(final_population,birth_rate)
+        plot_state_transition_diagram_birth(final_population,birth_rate)
         display_statistics(populations)
         st.markdown("""
 ### Pure Birth Process
@@ -54,4 +55,37 @@ we use np.random bcoz poisson processs is random in nature and follows memoryles
                     
 Average Rate of Births is 1/λ.
 
+""")
+        
+
+# Pure Death Process Models 
+if models=="Pure Death Process":    
+    death_rate = st.sidebar.slider("Death Rate (µ)",0.1,10.0,1.0)
+    total_time = st.sidebar.slider("Total Time ",1,100,10)
+    Population = st.sidebar.slider("Initial Population ",1,100,10)
+    if st.button("Run Simulation"):
+        times, populations = deathProcess(death_rate, total_time,Population)
+        # Plotting
+        visualize_death(times, populations)
+        final_population=populations[-1]
+        st.write(f"Final population after {total_time} time units: {final_population}")
+        plot_state_transition_diagram_death(final_population,death_rate)
+        display_statistics(populations)
+        st.markdown("""It is a counting process {N(t), t ∈ [0,∞)}, where N(t) denotes the number of departures 
+(deaths) occurred in time t, i.e., in [0, t] with N(0) = 0 and average rate of departure 
+µ> 0, and which satisfies the following three assumptions:
+1) Pr { one departure occurs between t and t + Δt } = µΔt + o(Δt), where µ is a constant 
+independent of N(t), Δt is an incremental element, and o(Δt) denotes a quantity 
+that becomes negligible when compared to Δt as Δt → 0.
+2) Pr { more than one departure between t and t + Δt } = o(Δt), i.e., negligible.
+3) The numbers of departures in non-overlapping intervals are statistically 
+independent; that is, the process has independent increments.
+
+                    A pure death process {N(t), t ∈ [0,∞)} is same as a truncated Poisson process, PP(µ).
+This means :
+• The random variable N(t) denoting number of departures in time t follows a 
+truncated Poisson distribution with parameter µt, i.e., P(µt).
+• Equivalently, it can be said that the time between successive departures, 
+i.e., the service time / inter-departure time follows an exponential 
+distribution with parameter µ, i.e., exp(µ).
 """)

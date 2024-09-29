@@ -18,7 +18,7 @@ def birthProcess(birth_rate,total_time):
     return times,populations
 
 # Visualization
-def visualize(times, populations):
+def visualize_birth(times, populations):
     plt.figure(figsize=(10, 5))
     plt.step(times, populations, where='post')
     plt.title('Pure Birth Process Simulation')
@@ -28,7 +28,7 @@ def visualize(times, populations):
     st.pyplot(plt)
 
 # Diagram
-def plot_state_transition_diagram(max_population, birth_rate):
+def plot_state_transition_diagram_birth(max_population, birth_rate):
     G = nx.DiGraph()
     
     for i in range(max_population + 1):
@@ -49,13 +49,26 @@ def plot_state_transition_diagram(max_population, birth_rate):
     plt.ylabel("Next Population Size")
     plt.grid()
     st.pyplot(plt)
-
 def display_statistics(populations):
-    average_population = np.mean(populations)
-    variance_population = np.var(populations)
-    expected_births = populations[-1]  
+    # Calculate statistics
+    final_population = populations[-1]
+    mean_population = np.mean(populations)
+    std_population = np.std(populations)
+    
+    # Create a DataFrame for more statistics if needed
+    df = pd.DataFrame({'Time': range(len(populations)), 'Population': populations})
+    
+    # Display statistics in Streamlit
+    st.write("### Statistics")
+    st.write(f"Final Population: {final_population}")
+    st.write(f"Mean Population: {mean_population:.2f}")
+    st.write(f"Standard Deviation of Population: {std_population:.2f}")
 
-    st.write(f"### Summary Statistics")
-    st.write(f"**Average Population Size:** {average_population:.2f}")
-    st.write(f"**Variance in Population Size:** {variance_population:.2f}")
-    st.write(f"**Expected Number of Births:** {expected_births}")
+    # Plot population over time
+    plt.figure(figsize=(10, 5))
+    plt.plot(df['Time'], df['Population'], marker='o', linestyle='-', color='blue')
+    plt.title("Population Over Time")
+    plt.xlabel("Time")
+    plt.ylabel("Population")
+    plt.grid()
+    st.pyplot(plt)
